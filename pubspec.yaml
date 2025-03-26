@@ -67,6 +67,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   table_calendar: ^3.0.8
   multi_dropdown: ^3.0.1
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -91,12 +92,22 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/translations/
     - assets/images/
     - .env.dev
     - .env.prod
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/splash1.png
+  android_gravity: "center_horizontal"
+  android_12:
+    color: "#ffffff"
+    image: assets/images/splash1.png
+    icon_background_color: "#ffffff"
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
