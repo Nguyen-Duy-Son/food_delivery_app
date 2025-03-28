@@ -9,13 +9,18 @@ import 'package:food_delivery_app/presentation/routes/app_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'environment_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await ScreenUtil.ensureScreenSize();
+
   // DI init
   await configureDependencies();
 
+  // Load .env.dev file
+  await Environment.init();
 
   // Read url from env and use for baseUrl in init
   await RestClientProvider.init();

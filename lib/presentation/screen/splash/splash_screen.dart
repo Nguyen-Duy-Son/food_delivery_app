@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/core/constants/app_images.dart';
+import 'package:food_delivery_app/core/enum/storage_keys.dart';
+import 'package:food_delivery_app/core/services/shared_preferences_service.dart';
+import 'package:food_delivery_app/di.dart';
 import 'package:food_delivery_app/presentation/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,9 +20,20 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, RouteName.homeScreen);
-    });
+    initData();
+  }
+
+  Future<void> initData() async {
+    SharedPreferencesService prefs = getIt<SharedPreferencesService>();
+    bool isFirstTime = await prefs.getBoolValue(StorageKeys.isFirstTime);
+    await checkIsFirstTime(isFirstTime);
+  }
+  Future<void> checkIsFirstTime(bool isFirstTime) async {
+    if (isFirstTime) {
+      Navigator.pushReplacementNamed(context, RouteName.onBoardingScreen);
+    } else {
+      Navigator.pushReplacementNamed(context, RouteName.signInScreen);
+    }
   }
 
   @override
