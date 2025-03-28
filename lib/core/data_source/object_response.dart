@@ -4,13 +4,11 @@ part 'object_response.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class ObjectResponse<T> {
-  @JsonKey(name: 'Code')
-  final String? code;
-  @JsonKey(name: 'MsgCode')
-  final String? msgCode;
-  @JsonKey(name: 'Message')
-  final String? message;
-  @JsonKey(name: 'Data')
+  @JsonKey(name: 'statusCode')
+  final int? statusCode;
+  @JsonKey(name: 'success')
+  final bool? success;
+  @JsonKey(name: 'data')
   final T? data;
 
   factory ObjectResponse.fromJson(
@@ -21,9 +19,8 @@ class ObjectResponse<T> {
       _$ObjectResponseToJson(this, toJsonT);
 
   const ObjectResponse({
-    this.code,
-    this.msgCode,
-    this.message,
+    this.statusCode,
+    this.success,
     this.data,
   });
 }

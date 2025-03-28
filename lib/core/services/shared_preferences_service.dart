@@ -6,6 +6,10 @@ abstract class SharedPreferencesService {
 
   Future<String> getStringValue(StorageKeys key);
 
+  Future<void> setBoolValue(StorageKeys key, bool value);
+
+  Future<bool> getBoolValue(StorageKeys key);
+
   Future<void> setIntValue(StorageKeys key, int value);
 
   Future<int?> getIntValue(StorageKeys key);
