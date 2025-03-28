@@ -61,4 +61,26 @@ class SharedPreferencesServiceImpl implements SharedPreferencesService {
       _loggerService.error('removeByKey $key: $error', stackTrace: stackTrace);
     }
   }
+
+  @override
+  Future<bool> getBoolValue(StorageKeys key) async {
+    try {
+      final preferences = await SharedPreferences.getInstance();
+      final value = preferences.getBool(key.name) ?? false;
+      return value;
+    } on Exception catch (error, stackTrace) {
+      _loggerService.error('getStringValue $key: $error', stackTrace: stackTrace);
+      return false;
+    }
+  }
+
+  @override
+  Future<void> setBoolValue(StorageKeys key, bool value) async {
+    try {
+      final preferences = await SharedPreferences.getInstance();
+      preferences.setBool(key.name, value);
+    } on Exception catch (error, stackTrace) {
+      _loggerService.error('setStringValue $key: $error', stackTrace: stackTrace);
+    }
+  }
 }

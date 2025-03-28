@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/presentation/screen/home/cubit/home_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,14 +9,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late HomeCubit _homeCubit;
   CancelToken? _cancelToken;
 
   @override
   void initState() {
     super.initState();
     _cancelToken = CancelToken();
-    _homeCubit = BlocProvider.of<HomeCubit>(context);
   }
 
   @override
