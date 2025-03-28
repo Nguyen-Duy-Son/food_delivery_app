@@ -55,6 +55,10 @@ android {
         Dev {
             dimension 'default'
             resValue 'string', 'app_name', 'Food Delivery Dev'
+            resValue 'string', 'facebook_app_id', '987131800053778'
+            resValue 'string', 'facebook_app_name', 'Food Delivery App'
+            resValue 'string', 'facebook_token', '79d52aa78ad0713ba4cdb178a8443ce6'
+            resValue 'string', 'fb_login_protocol_scheme', 'fb987131800053778'
             applicationId 'com.fooddelivery.app.dev'
             resValue 'string', 'scheme', 'fooddeliverydev'
         }
@@ -62,6 +66,10 @@ android {
         Uat {
             dimension 'default'
             resValue 'string', 'app_name', 'Food Delivery Uat'
+            resValue 'string', 'facebook_app_id', '987131800053778'
+            resValue 'string', 'facebook_app_name', 'Food Delivery App'
+            resValue 'string', 'facebook_token', '79d52aa78ad0713ba4cdb178a8443ce6'
+            resValue 'string', 'fb_login_protocol_scheme', 'fb987131800053778'
             applicationId 'com.fooddelivery.app.uat'
             resValue 'string', 'scheme', 'fooddeliveryuat'
         }
@@ -69,6 +77,10 @@ android {
         Prod {
             resValue 'string', 'app_name', 'Food Delivery'
             dimension 'default'
+            resValue 'string', 'facebook_app_id', '987131800053778'
+            resValue 'string', 'facebook_app_name', 'Food Delivery App'
+            resValue 'string', 'facebook_token', '79d52aa78ad0713ba4cdb178a8443ce6'
+            resValue 'string', 'fb_login_protocol_scheme', 'fb987131800053778'
             applicationId 'com.fooddelivery.app'
             resValue 'string', 'scheme', 'fooddelivery'
         }
@@ -88,4 +100,6 @@ flutter {
 
 dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
+//    implementation 'com.facebook.android:facebook-login:latest.release'
 }
