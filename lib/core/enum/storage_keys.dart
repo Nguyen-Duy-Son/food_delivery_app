@@ -5,4 +5,7 @@ enum StorageKeys {
   isFirstTime,
   themeMode,
   language,
+  isRememberMe,
+  email,
+  password,
 }

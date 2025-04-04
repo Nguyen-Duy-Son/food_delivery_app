@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/core/constants/app_colors.dart';
+import 'package:food_delivery_app/core/constants/app_icons.dart';
 import 'package:food_delivery_app/core/constants/app_text_style.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,9 +28,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 }
               },
               icon: SvgPicture.asset(
-                "assets/icons/ic_arrow_left.svg",
-                width: 30.w,
-                height: 30.w,
+                AppIcons.icArrowLeft,
+                width: 20.w,
+                height: 20.w,
               ),
             )
           : null,

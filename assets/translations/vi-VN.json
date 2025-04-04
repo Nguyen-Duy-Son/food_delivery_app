@@ -1,1 +1,3 @@
-{}
+{
+  "validateEmpty": "The field cannot be empty."
+}

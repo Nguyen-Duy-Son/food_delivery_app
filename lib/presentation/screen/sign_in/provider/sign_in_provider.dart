@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:food_delivery_app/core/enum/load_status.dart';
 import 'package:food_delivery_app/core/services/shared_preferences_service.dart';
 import 'package:food_delivery_app/di.dart';
@@ -60,5 +62,33 @@ class SignInNotifier extends StateNotifier<SignInState> {
     await getIt<SharedPreferencesService>().setStringValue(StorageKeys.refreshToken, data.refreshToken ?? '');
     await getIt<SharedPreferencesService>().setStringValue(StorageKeys.userData, jsonEncode(data.user));
   }
+
+  void rememberMe(bool value, String email, String password) async{
+    try{
+      if(value){
+        await getIt<SharedPreferencesService>().setStringValue(StorageKeys.email, email);
+        await getIt<SharedPreferencesService>().setStringValue(StorageKeys.password, password);
+      }
+      else{
+        await getIt<SharedPreferencesService>().setStringValue(StorageKeys.email, '');
+        await getIt<SharedPreferencesService>().setStringValue(StorageKeys.password, '');
+      }
+    } catch(e){
+      print(e);
+    }
+  }
+
+  // void initData() async{
+  //   try{
+  //     final isRememberMe = await getIt<SharedPreferencesService>().getBoolValue(StorageKeys.isRememberMe);
+  //     final email = await getIt<SharedPreferencesService>().getStringValue(StorageKeys.email);
+  //     final password = await getIt<SharedPreferencesService>().getStringValue(StorageKeys.password);
+  //     state = state.copyWith(email: email, password: password, isRememberMe: isRememberMe);
+  //   } catch(e){
+  //     print(e);
+  //   }
+  // }
+
+
 
 }

@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,9 +11,13 @@ import 'package:food_delivery_app/core/constants/app_padding.dart';
 import 'package:food_delivery_app/core/constants/app_text_style.dart';
 import 'package:food_delivery_app/core/dto/sign_in/sign_in_request.dart';
 import 'package:food_delivery_app/core/enum/load_status.dart';
+import 'package:food_delivery_app/core/enum/storage_keys.dart';
+import 'package:food_delivery_app/core/services/shared_preferences_service.dart';
+import 'package:food_delivery_app/di.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_action.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_check_box.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_page_widget.dart';
+import 'package:food_delivery_app/presentation/common_widgets/app_snack_bar.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_text_field.dart';
 import 'package:food_delivery_app/presentation/routes/route_name.dart';
 import 'package:food_delivery_app/presentation/screen/sign_in/provider/sign_in_provider.dart';
@@ -45,9 +47,25 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // ref.read(signInControllerProvider.notifier).initData();
+    initData();
+  }
+
+  void initData() async {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
+    final isRememberMe = await getIt<SharedPreferencesService>()
+        .getBoolValue(StorageKeys.isRememberMe);
+    final email = await getIt<SharedPreferencesService>()
+        .getStringValue(StorageKeys.email);
+    final password = await getIt<SharedPreferencesService>()
+        .getStringValue(StorageKeys.password);
+    setState(() {
+      this.isRememberMe = isRememberMe;
+      _emailController.text = email;
+      _passwordController.text = password;
+    });
   }
 
   @override
@@ -58,11 +76,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         Navigator.pushReplacementNamed(context, RouteName.homeScreen);
       }
       if (next.signInStatus == LoadStatus.FAILURE) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.errorMessage ?? tr("Sign in failed"))),
+        AppSnackBar.showError(
+          next.errorMessage ?? tr("Login failed"),
         );
       }
     });
+
     return AppPageWidget(
       resizeToAvoidBottomInset: true,
       isLoading: signInState.signInStatus == LoadStatus.LOADING,
@@ -107,7 +126,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           topRight: Radius.circular(20.r),
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: AppPadding.horizontal, vertical: AppPadding.vertical),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppPadding.horizontal,
+                          vertical: AppPadding.vertical),
                       child: Column(
                         children: [
                           AppTextField(
@@ -122,7 +143,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onChanged: (value) {
-                              ref.read(signInControllerProvider.notifier).updateEmail(value);
+                              ref
+                                  .read(signInControllerProvider.notifier)
+                                  .updateEmail(value);
                             },
                           ),
                           SizedBox(height: 16.h),
@@ -133,7 +156,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             suffixIcon: signInState.password?.isNotEmpty == true
                                 ? GestureDetector(
                                     onTap: _onToggleShowPass,
-                                    child: isShowPass ? _buildEyeCloseIcon() : _buildEyeIcon(),
+                                    child: isShowPass
+                                        ? _buildEyeCloseIcon()
+                                        : _buildEyeIcon(),
                                   )
                                 : const SizedBox(),
                             prefixIcon: _buildIconLock(),
@@ -145,7 +170,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onChanged: (value) {
-                              ref.read(signInControllerProvider.notifier).updatePassword(value);
+                              ref
+                                  .read(signInControllerProvider.notifier)
+                                  .updatePassword(value);
                             },
                           ),
                           SizedBox(height: 20.h),
@@ -156,6 +183,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               AppCheckBoxWidget(
                                 value: isRememberMe,
                                 onClick: (value) {
+                                  ref
+                                      .read(signInControllerProvider.notifier)
+                                      .rememberMe(value, _emailController.text,
+                                          _passwordController.text);
                                   setState(() {
                                     isRememberMe = value;
                                   });
@@ -177,12 +208,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             content: tr("LOG IN"),
                             onPressed: () {
                               if (_formKey.currentState?.validate() == true) {
-                                ref.read(signInControllerProvider.notifier).signIn(
-                                  signInRequestEntity: SignInRequestEntity(
-                                      email: signInState.email,
-                                      password: signInState.password,
-                                    ),
-                                );
+                                ref
+                                    .read(signInControllerProvider.notifier)
+                                    .signIn(
+                                      signInRequestEntity: SignInRequestEntity(
+                                        email: signInState.email,
+                                        password: signInState.password,
+                                      ),
+                                    );
                               }
                             },
                             backgroundColor: AppColors.orangeFFA500,
@@ -198,7 +231,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               SizedBox(width: 8.w),
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, RouteName.signUpScreen);
+                                  Navigator.pushNamed(
+                                      context, RouteName.signUpScreen);
                                 },
                                 child: Text(
                                   tr("SIGN UP"),
@@ -213,7 +247,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             style: AppStyle.regular14grey818181,
                           ),
                           SizedBox(height: 16.h),
-                          _buildSelectSignIn(),
+                          _buildSelectSignIn(ref),
                         ],
                       ),
                     )
@@ -259,13 +293,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     ));
   }
 
-  Widget _buildSelectSignIn() {
+  Widget _buildSelectSignIn(WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(width: 16.w),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            // ref.read(signInControllerProvider.notifier).loginWithFacebook();
+          },
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.blue1C8CEE,
@@ -322,5 +358,4 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       ],
     );
   }
-
 }

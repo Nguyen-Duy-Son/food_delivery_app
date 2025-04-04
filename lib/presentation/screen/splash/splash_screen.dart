@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await checkIsFirstTime(isFirstTime);
   }
   Future<void> checkIsFirstTime(bool isFirstTime) async {
-    if (isFirstTime) {
+    if (!isFirstTime) {
       Navigator.pushReplacementNamed(context, RouteName.onBoardingScreen);
     } else {
       Navigator.pushReplacementNamed(context, RouteName.signInScreen);

@@ -8,11 +8,11 @@ import 'package:food_delivery_app/core/dto/sign_in/sign_in_response.dart';
 import 'package:food_delivery_app/core/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
-
   @override
-  Future<Either<ErrorModel, ObjectResponse<SignInResponseEntity>>> signIn({required SignInRequestEntity signInRequestEntity, CancelToken? cancelToken}) async {
+  Future<Either<ErrorModel, ObjectResponse<SignInResponseEntity>>> signIn(
+      {required SignInRequestEntity signInRequestEntity,
+      CancelToken? cancelToken}) async {
     try {
-
       final response = await RestClientProvider.apiClient!.signIn(
         signInRequestEntity,
         cancelToken,
@@ -21,8 +21,14 @@ class AuthRepositoryImpl extends AuthRepository {
       return Right(response);
     } catch (e) {
       if (e is DioError) {
-        return Left(ErrorModel(message: e.error.toString()));
+        final errorData = e.response?.data;
+        final message = errorData is Map && errorData['error'] is Map
+            ? errorData['error']['message']
+            : e.message;
+
+        return Left(ErrorModel(message: message ?? 'Unknown error'));
       }
+
       return Left(ErrorModel(message: e.toString()));
     }
   }
