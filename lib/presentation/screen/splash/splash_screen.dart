@@ -5,6 +5,7 @@ import 'package:food_delivery_app/core/enum/storage_keys.dart';
 import 'package:food_delivery_app/core/services/shared_preferences_service.dart';
 import 'package:food_delivery_app/di.dart';
 import 'package:food_delivery_app/presentation/routes/route_name.dart';
+import 'package:food_delivery_app/presentation/screen/sign_in/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,7 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!isFirstTime) {
       Navigator.pushReplacementNamed(context, RouteName.onBoardingScreen);
     } else {
-      Navigator.pushReplacementNamed(context, RouteName.signInScreen);
+      Navigator.pushReplacementNamed(context, RouteName.signInScreen, arguments: SignInScreenArguments(
+        isShowBackButton: false,
+      ));
     }
   }
 

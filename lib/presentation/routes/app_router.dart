@@ -7,6 +7,7 @@ import 'package:food_delivery_app/presentation/screen/home/home_screen.dart';
 import 'package:food_delivery_app/presentation/screen/on_boarding/on_boarding_screen.dart';
 import 'package:food_delivery_app/presentation/screen/sign_in/provider/sign_in_provider.dart';
 import 'package:food_delivery_app/presentation/screen/sign_in/sign_in_screen.dart';
+import 'package:food_delivery_app/presentation/screen/sign_up/provider/sign_up_provider.dart';
 import 'package:food_delivery_app/presentation/screen/sign_up/sign_up_screen.dart';
 import 'package:food_delivery_app/presentation/screen/splash/splash_screen.dart';
 
@@ -28,14 +29,19 @@ class AppRoutes {
       case RouteName.signInScreen:
         routeWidget = ProviderScope(
           overrides: [
-            authRepositoryProvider.overrideWithValue(getIt<AuthRepository>()),
+            authSignInRepositoryProvider.overrideWithValue(getIt<AuthRepository>()),
           ],
-          child: const SignInScreen(),
+          child: SignInScreen(arguments: arguments as SignInScreenArguments,),
         );
         break;
 
       case RouteName.signUpScreen:
-        routeWidget = const SignUpScreen();
+        routeWidget = ProviderScope(
+          overrides: [
+            authSignUpRepositoryProvider.overrideWithValue(getIt<AuthRepository>()),
+          ],
+          child: const SignUpScreen(),
+        );
         break;
       case RouteName.homeScreen:
         routeWidget = const HomeScreen();

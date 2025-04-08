@@ -184,7 +184,7 @@ class _AppTextFieldState extends State<AppTextField> {
               borderSide: const BorderSide(color: AppColors.danger500),
               borderRadius: BorderRadius.circular(8.w),
             ),
-            hintText: tr(widget.hintText!),
+            hintText: tr(widget.hintText ?? ""),
             hintStyle: GoogleFonts.roboto(
               fontWeight: FontWeight.w400,
               fontSize: min(12.sp, 16.0),

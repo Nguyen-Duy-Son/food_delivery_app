@@ -8,11 +8,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool isShowBackButton;
-  final String titleAppBar;
+  final String? titleAppBar;
   final Color? backgroundColor;
   final VoidCallback? onTap;
   const AppBarWidget(
-      {super.key, required this.titleAppBar, this.backgroundColor, this.isShowBackButton = true, this.onTap});
+      {super.key, this.titleAppBar, this.backgroundColor, this.isShowBackButton = true, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +20,29 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       backgroundColor: backgroundColor ?? AppColors.white,
       leading: isShowBackButton
-          ? IconButton(
-              onPressed: () {
+          ? GestureDetector(
+              onTap: () {
                 Navigator.of(context).pop();
                 if (onTap != null) {
                   onTap!();
                 }
               },
-              icon: SvgPicture.asset(
-                AppIcons.icArrowLeft,
-                width: 20.w,
-                height: 20.w,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(100.r),
+                ),
+                margin: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(8.w),
+                alignment: Alignment.center,
+                child: SvgPicture.asset(
+                  AppIcons.icArrowLeft,
+                ),
               ),
             )
           : null,
       title: AppTextWidget(
-        text: titleAppBar,
+        text: titleAppBar ?? '',
         textStyle: AppStyle.bold18black,
       ),
       centerTitle: true,

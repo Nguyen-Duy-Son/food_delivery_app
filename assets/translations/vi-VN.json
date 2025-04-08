@@ -1,3 +1,9 @@
 {
-  "validateEmpty": "The field cannot be empty."
+  "validateEmpty": "The field cannot be empty.",
+  "validateEmail": "The email address is not valid.",
+  "validatePhone": "The phone number is not valid.",
+  "validateUrl": "The URL is not valid.",
+  "validateDate": "The date is not valid.",
+  "validateNumber": "The number is not valid.",
+  "validatePassword": "Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một chữ số và một ký tự đặc biệt."
 }

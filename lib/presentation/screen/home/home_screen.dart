@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/presentation/common_widgets/app_page_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,12 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Home Screen'),
-        ),
-        body: Center(
-          child: Text('Home'),
-        ));
+    return AppPageWidget(
+      body: const Center(
+        child: Text('Home Screen'),
+      ),
+    );
   }
 }

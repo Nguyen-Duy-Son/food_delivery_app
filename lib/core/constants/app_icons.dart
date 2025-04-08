@@ -15,6 +15,7 @@ class AppIcons {
   static const String icGoogle = '$iconPath/ic_google.svg';
   static const String icApple = '$iconPath/ic_apple.svg';
 
-  static const String icArrowLeft = '$iconPath/ic_arrow_left.svg';
+  static const String icArrowLeft = '$iconPath/ic_arr_left.svg';
+  static const String icMail = '$iconPath/ic_mail.svg';
 
 }

@@ -9,6 +9,7 @@ import 'package:food_delivery_app/presentation/common_widgets/app_action.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_circle_widget.dart';
 import 'package:food_delivery_app/presentation/routes/route_name.dart';
 import 'package:food_delivery_app/presentation/screen/on_boarding/widgets/on_board_page.dart';
+import 'package:food_delivery_app/presentation/screen/sign_in/sign_in_screen.dart';
 
 import '../../../core/services/shared_preferences_service.dart';
 
@@ -50,7 +51,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void onGetStarted() {
     // Xử lý khi nhấn Get Started
     setIsFirstTime();
-    Navigator.pushReplacementNamed(context, RouteName.signInScreen);
+    Navigator.pushReplacementNamed(context, RouteName.signInScreen, arguments: SignInScreenArguments(
+      isShowBackButton: false,
+    ));
   }
 
   Future<void> setIsFirstTime() async {

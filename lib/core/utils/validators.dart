@@ -21,4 +21,13 @@ class Validator {
     return RegExp(r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])').hasMatch(string.trim());
   }
 
+  static bool validatePassword(String password) {
+    return RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~^%+=.,_-])[A-Za-z\d!@#\$&*~^%+=.,_-]{8,}$'
+    ).hasMatch(password);
+  }
+
+
+
+
 }

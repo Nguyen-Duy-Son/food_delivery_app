@@ -14,12 +14,12 @@ import 'package:food_delivery_app/core/dto/sign_in/sign_in_response.dart';
 
 import '../../../../core/enum/storage_keys.dart';
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
+final authSignInRepositoryProvider = Provider<AuthRepository>((ref) {
   throw UnimplementedError(); // Tránh gọi trực tiếp nếu chưa override
 });
 
 final signInControllerProvider = StateNotifierProvider<SignInNotifier, SignInState>((ref) {
-  final repo = ref.watch(authRepositoryProvider);
+  final repo = ref.watch(authSignInRepositoryProvider);
   return SignInNotifier(repo: repo);
 });
 

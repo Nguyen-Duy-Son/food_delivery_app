@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:food_delivery_app/core/data_source/object_response.dart';
 import 'package:food_delivery_app/core/dto/sign_in/sign_in_request.dart';
 import 'package:food_delivery_app/core/dto/sign_in/sign_in_response.dart';
+import 'package:food_delivery_app/core/dto/sign_up/sign_up_request.dart';
+import 'package:food_delivery_app/core/dto/sign_up/sign_up_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_client.g.dart';
@@ -17,8 +19,8 @@ abstract class ApiClient {
   );
 
   @POST('/auth/register')
-  Future<ObjectResponse<SignInResponseEntity>> signUp(
-      @Body() SignInRequestEntity signInRequestEntity,
+  Future<ObjectResponse<SignUpResponseEntity>> signUp(
+      @Body() SignUpRequestEntity signUpRequestEntity,
       @CancelRequest() CancelToken? cancelToken,
       );
 

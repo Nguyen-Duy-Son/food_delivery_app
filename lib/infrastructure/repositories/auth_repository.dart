@@ -5,6 +5,8 @@ import 'package:food_delivery_app/core/data_source/object_response.dart';
 import 'package:food_delivery_app/core/data_source/response_models.dart';
 import 'package:food_delivery_app/core/dto/sign_in/sign_in_request.dart';
 import 'package:food_delivery_app/core/dto/sign_in/sign_in_response.dart';
+import 'package:food_delivery_app/core/dto/sign_up/sign_up_request.dart';
+import 'package:food_delivery_app/core/dto/sign_up/sign_up_response.dart';
 import 'package:food_delivery_app/core/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -15,6 +17,31 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final response = await RestClientProvider.apiClient!.signIn(
         signInRequestEntity,
+        cancelToken,
+      );
+      //TODO: handler response models => entity
+      return Right(response);
+    } catch (e) {
+      if (e is DioError) {
+        final errorData = e.response?.data;
+        final message = errorData is Map && errorData['error'] is Map
+            ? errorData['error']['message']
+            : e.message;
+
+        return Left(ErrorModel(message: message ?? 'Unknown error'));
+      }
+
+      return Left(ErrorModel(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, ObjectResponse<SignUpResponseEntity>>> signUp(
+      {required SignUpRequestEntity signUpRequestEntity,
+        CancelToken? cancelToken}) async {
+    try {
+      final response = await RestClientProvider.apiClient!.signUp(
+        signUpRequestEntity,
         cancelToken,
       );
       //TODO: handler response models => entity

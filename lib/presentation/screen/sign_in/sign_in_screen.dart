@@ -15,6 +15,7 @@ import 'package:food_delivery_app/core/enum/storage_keys.dart';
 import 'package:food_delivery_app/core/services/shared_preferences_service.dart';
 import 'package:food_delivery_app/di.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_action.dart';
+import 'package:food_delivery_app/presentation/common_widgets/app_bar_widget.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_check_box.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_page_widget.dart';
 import 'package:food_delivery_app/presentation/common_widgets/app_snack_bar.dart';
@@ -23,8 +24,17 @@ import 'package:food_delivery_app/presentation/routes/route_name.dart';
 import 'package:food_delivery_app/presentation/screen/sign_in/provider/sign_in_provider.dart';
 import 'package:food_delivery_app/presentation/screen/sign_in/provider/sign_in_state.dart';
 
+class SignInScreenArguments {
+  final bool? isShowBackButton;
+
+  SignInScreenArguments({
+    this.isShowBackButton = false,
+  });
+}
+
 class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({super.key});
+  final SignInScreenArguments? arguments;
+  const SignInScreen({super.key, this.arguments});
 
   @override
   ConsumerState<SignInScreen> createState() => _SignInScreenState();
@@ -47,7 +57,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // ref.read(signInControllerProvider.notifier).initData();
     initData();
   }
 
@@ -55,14 +64,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    final isRememberMe = await getIt<SharedPreferencesService>()
+    final isRemember = await getIt<SharedPreferencesService>()
         .getBoolValue(StorageKeys.isRememberMe);
     final email = await getIt<SharedPreferencesService>()
         .getStringValue(StorageKeys.email);
     final password = await getIt<SharedPreferencesService>()
         .getStringValue(StorageKeys.password);
     setState(() {
-      this.isRememberMe = isRememberMe;
+       isRememberMe = isRemember;
       _emailController.text = email;
       _passwordController.text = password;
     });
@@ -86,6 +95,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       resizeToAvoidBottomInset: true,
       isLoading: signInState.signInStatus == LoadStatus.LOADING,
       backgroundColor: AppColors.black,
+      appbar: widget.arguments?.isShowBackButton == true ? AppBarWidget(
+        isShowBackButton: widget.arguments?.isShowBackButton ?? true,
+        backgroundColor: AppColors.black,
+      ) : null,
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -93,42 +106,42 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           },
           child: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: 1.sh,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          tr("Log In"),
-                          style: AppStyle.bold24white,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          tr("Please sign in to your existing account"),
-                          style: AppStyle.regular16grey500,
-                        ),
-                      ],
+                    SizedBox(height: 100.h),
+                    Text(
+                      tr("Log In"),
+                      style: AppStyle.bold24white,
                     ),
-                    SizedBox(height: 40.h),
-                    Container(
-                      width: 1.sw,
-                      height: 1.sh * 0.72,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.r),
-                          topRight: Radius.circular(20.r),
-                        ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      tr("Please sign in to your existing account"),
+                      style: AppStyle.regular16grey500,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.h),
+                Expanded(
+                  child: Container(
+                    width: 1.sw,
+                    // height: 1.sh * 0.6,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: AppPadding.horizontal,
-                          vertical: AppPadding.vertical),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppPadding.horizontal,
+                        vertical: AppPadding.vertical),
+                    child: SingleChildScrollView(
                       child: Column(
                         children: [
                           AppTextField(
@@ -151,7 +164,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SizedBox(height: 16.h),
                           AppTextField(
                             label: tr("Password"),
-                            hintText: tr("Enter your password"),
+                            hintText: tr("●●●●●●●●"),
                             controller: _passwordController,
                             suffixIcon: signInState.password?.isNotEmpty == true
                                 ? GestureDetector(
@@ -250,10 +263,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           _buildSelectSignIn(ref),
                         ],
                       ),
-                    )
-                  ],
-                ),
-              ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
