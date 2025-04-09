@@ -79,17 +79,19 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final signInState = ref.watch(signInControllerProvider);
-    ref.listen<SignInState>(signInControllerProvider, (previous, next) {
-      if (next.signInStatus == LoadStatus.SUCCESS) {
+
+    ref.listen<LoadStatus?>(signInControllerProvider.select((value) => value.signInStatus), (previous, next) {
+      if (next == LoadStatus.SUCCESS) {
         Navigator.pushReplacementNamed(context, RouteName.homeScreen);
       }
-      if (next.signInStatus == LoadStatus.FAILURE) {
+      if (next == LoadStatus.FAILURE) {
+        String errorMessage = ref.watch(signInControllerProvider).errorMessage ?? tr("Login failed");
         AppSnackBar.showError(
-          next.errorMessage ?? tr("Login failed"),
+          errorMessage,
         );
       }
     });
+    final signInState = ref.watch(signInControllerProvider);
 
     return AppPageWidget(
       resizeToAvoidBottomInset: true,

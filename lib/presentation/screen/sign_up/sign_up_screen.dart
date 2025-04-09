@@ -64,7 +64,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final signUpState = ref.watch(signUpControllerProvider);
+    SignUpState signUpState = ref.watch(signUpControllerProvider);
+
+    ref.listen<SignUpState>(signUpControllerProvider, (previous, next) {
+      if(next != previous) {
+        signUpState = next;
+      }
+    });
+
     ref.listen<LoadStatus?>(signUpControllerProvider.select((value) => value.signUpStatus), (previous, next) {
       if (next == LoadStatus.SUCCESS) {
         _showDialogSendEmail(context);
@@ -73,6 +80,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         );
       }
       if (next == LoadStatus.FAILURE) {
+        // String message = ref.watch(signUpControllerProvider).errorMessage ?? "";
         AppSnackBar.showError(
           signUpState.errorMessage ?? tr("Login failed"),
         );
@@ -240,7 +248,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           SizedBox(height: 20.h),
                           AppActionWidget(
                             content: tr("SIGN UP"),
-                            onPressed: () => signUp,
+                            onPressed: (){
+                              signUp();
+                            },
                             backgroundColor: AppColors.orangeFFA500,
                           ),
                           SizedBox(height: 30.h),
@@ -341,7 +351,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   void signUp() async {
     if (_formKey.currentState?.validate() == true) {
-      FocusScope.of(context).unfocus();
       SignUpRequestEntity signUpRequestEntity =
       SignUpRequestEntity(
         fullName: _fullNameController.text,

@@ -49,5 +49,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSLocationWhenInUseUsageDescription</key>
+        <string>Ứng dụng cần quyền truy cập vị trí khi đang sử dụng để cung cấp dịch vụ tốt hơn.</string>
 	</dict>
 </plist>
